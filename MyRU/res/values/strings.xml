@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MyRU</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="usernamePlaceholder">Username</string>
+    <string name="passwordPlaceholder">Password</string>
+    <string name="loginButtonText">Log In</string>
+    <string name="invalidLabelText">Invalid authentication, try again.</string>
+    <string name="logout">Log Out</string>
+    <string name="logoutTitle">Log Out</string>
+    <string name="logoutMessage">Are you sure you want to log out?</string>
+    <string name="Yes">Yes</string>
+    <string name="No">No</string>
+    <string name="Assignments">Assignments</string>
+    <string name="Grades">Grades</string>
+    <string name="Malid">Málið</string>
+    <string name="Icon">Icon</string>
+    <string name="noAssignments">No Assignments</string>
+    <string name="noGrades">No Grades</string>
+
+</resources>
