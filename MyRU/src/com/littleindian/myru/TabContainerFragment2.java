@@ -1,5 +1,4 @@
 package com.littleindian.myru;
-import com.littleindian.myru.R;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,8 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
-public class TabContainerFragment1 extends Fragment
+public class TabContainerFragment2 extends Fragment
 {
 	private FragmentActivity mActivity;
 	
@@ -20,10 +18,9 @@ public class TabContainerFragment1 extends Fragment
 	public boolean displayingDetailView;
 	
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState)
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		return inflater.inflate(R.layout.tab1_container, container, false);
+		return inflater.inflate(R.layout.tab2_container, container, false);
 	}
 	
 	@Override
@@ -37,20 +34,20 @@ public class TabContainerFragment1 extends Fragment
 		// The ltViewis is displayed initially
 		this.displayingDetailView = false;
 		
-		AssignmentTableFragment fragment = new AssignmentTableFragment();
+		GradeTableFragment fragment = new GradeTableFragment();
 		FragmentManager manager = getChildFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
-		transaction.add(R.id.tab1container, fragment);
+		transaction.add(R.id.tab2container, fragment);
 		transaction.commit();
 	}
-	
+
 	public void onBackPressed()
 	{
 		// If a detail view is being displayed, display the list view again...
 		if(displayingDetailView == true)
 		{
 			displayingDetailView = false;
-			AssignmentTableFragment fragment = new AssignmentTableFragment();
+			GradeTableFragment fragment = new GradeTableFragment();
 			FragmentManager manager = getChildFragmentManager();
 			FragmentTransaction transaction = manager.beginTransaction();
 			transaction.replace(R.id.tab1container, fragment);

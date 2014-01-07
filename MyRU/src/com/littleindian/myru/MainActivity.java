@@ -18,6 +18,8 @@ public class MainActivity extends FragmentActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		// Set the context of RUData
+		RUData.getInstance().setContext(this);
 		
 		/* TabHost setup begins*/
 		
@@ -42,7 +44,7 @@ public class MainActivity extends FragmentActivity
 		tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
 		((TextView)tabIndicator.findViewById(R.id.tabTitle)).setText("Grades");
 		((ImageView)tabIndicator.findViewById(R.id.tabIcon)).setImageResource(R.drawable.grades_icon);
-		mTabHost.addTab(mTabHost.newTabSpec(ApplicationConstants.tab2).setIndicator(tabIndicator), GradesTableFragment.class, null);
+		mTabHost.addTab(mTabHost.newTabSpec(ApplicationConstants.tab2).setIndicator(tabIndicator), TabContainerFragment2.class, null);
 		
 		// Málið tab
 		tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
@@ -64,12 +66,21 @@ public class MainActivity extends FragmentActivity
 	@Override
 	public void onBackPressed()
 	{
+		// If assignment tab
 		if(mTabHost.getCurrentTab() == 0)
 		{
 			TabContainerFragment1 container = (TabContainerFragment1) getSupportFragmentManager().findFragmentByTag(ApplicationConstants.tab1);
 			container.onBackPressed();
-			return;
 		}
-		super.onBackPressed();
+		// If grade tab
+		else if(mTabHost.getCurrentTab() == 1)
+		{
+			TabContainerFragment2 container = (TabContainerFragment2) getSupportFragmentManager().findFragmentByTag(ApplicationConstants.tab1);
+			container.onBackPressed();
+		}
+		else
+		{
+			super.onBackPressed();
+		}
 	}
 }

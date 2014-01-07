@@ -47,7 +47,7 @@ public final class R {
     }
     public static final class id {
         public static final int actionBarTitle=0x7f080007;
-        public static final int action_settings=0x7f08000c;
+        public static final int action_settings=0x7f08000d;
         public static final int assignmentCheckImage=0x7f080001;
         public static final int assignmentCourseLabel=0x7f080003;
         public static final int assignmentDateLabel=0x7f080004;
@@ -57,8 +57,9 @@ public final class R {
         public static final int logoutButton=0x7f080008;
         public static final int realtabcontent=0x7f080000;
         public static final int tab1container=0x7f080009;
-        public static final int tabIcon=0x7f08000b;
-        public static final int tabTitle=0x7f08000a;
+        public static final int tab2container=0x7f08000a;
+        public static final int tabIcon=0x7f08000c;
+        public static final int tabTitle=0x7f08000b;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -67,7 +68,8 @@ public final class R {
         public static final int assignment_tableview=0x7f030003;
         public static final int ru_action_bar=0x7f030004;
         public static final int tab1_container=0x7f030005;
-        public static final int tab_indicator=0x7f030006;
+        public static final int tab2_container=0x7f030006;
+        public static final int tab_indicator=0x7f030007;
     }
     public static final class menu {
         public static final int main=0x7f070000;

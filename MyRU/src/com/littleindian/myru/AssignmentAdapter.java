@@ -26,41 +26,6 @@ public class AssignmentAdapter extends ArrayAdapter<RUAssignment>
 		this.data = (ArrayList<RUAssignment>)data;
 		this.context = context;
 		this.layoutResourceId = resource;
-		
-		
-		/* Dummy code begins */
-		
-		if(data == null)
-		{
-			this.data = new ArrayList<RUAssignment>();
-			
-			RUAssignment a = new RUAssignment();
-			a.setAssignmentURL("http://malid.ru.is");
-			a.setTitle("Bomblab");
-			a.setCourseName("Tölvuhögun");
-			a.setDueDate("13.01");
-			a.setHandedIn("Óskilað");
-			
-			RUAssignment b = new RUAssignment();
-			b.setAssignmentURL("http://malid.ru.is");
-			b.setTitle("Dæmatímaverkefni 5");
-			b.setCourseName("Reiknirit");
-			b.setDueDate("24.12");
-			b.setHandedIn("Skilað");
-			
-			RUAssignment c = new RUAssignment();
-			c.setAssignmentURL("http://malid.ru.is");
-			c.setTitle("Síðannarverkefni");
-			c.setCourseName("Hugbúnaðarfræði");
-			c.setDueDate("05.05");
-			c.setHandedIn("Óskilað");
-			
-			this.data.add(a);
-			this.data.add(b);
-			this.data.add(c);
-		}
-		
-		/* Dummy code ends */
 	}
 	
 	@Override
