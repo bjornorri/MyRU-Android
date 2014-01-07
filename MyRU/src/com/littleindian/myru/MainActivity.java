@@ -75,7 +75,7 @@ public class MainActivity extends FragmentActivity
 		// If grade tab
 		else if(mTabHost.getCurrentTab() == 1)
 		{
-			TabContainerFragment2 container = (TabContainerFragment2) getSupportFragmentManager().findFragmentByTag(ApplicationConstants.tab1);
+			TabContainerFragment2 container = (TabContainerFragment2) getSupportFragmentManager().findFragmentByTag(ApplicationConstants.tab2);
 			container.onBackPressed();
 		}
 		else

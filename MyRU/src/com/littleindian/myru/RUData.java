@@ -75,27 +75,7 @@ public class RUData
     }
     
     public ArrayList<RUAssignment> getAssignments()
-    {
-    	assignments.clear();
-    	for(int i = 0; i < 20; i++)
-    	{
-    		RUAssignment a = new RUAssignment();
-        	a.setTitle("Test Assignment");
-        	a.setCourseName("Forritunarmál");
-        	a.setDueDate("24.12");
-        	a.setAssignmentURL("https://myschool.ru.is/myschool/?Page=Exe&ID=2.4&ViewMode=2&fagid=25070&verkID=43960");
-        	
-        	if(i % 3 != 0)
-        	{
-        		a.setHandedIn("Óskilað");
-        	}
-        	else
-        	{
-        		a.setHandedIn("Skilað");
-        	}
-        	assignments.add(a);
-    	}
-    	
+    {	
     	return assignments;
     }
     

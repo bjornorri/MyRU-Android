@@ -1,10 +1,13 @@
 package com.littleindian.myru;
 
+import com.littleindian.myru.model.RUAssignment;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +34,7 @@ public class AssignmentTableFragment extends ListFragment
 		mParentFragment = (TabContainerFragment1) this.getParentFragment();
 		
 		// Set the list's adapter
-		AssignmentAdapter adapter = new AssignmentAdapter(mActivity, R.layout.assignment_cell, null);
+		AssignmentAdapter adapter = new AssignmentAdapter(mActivity, R.layout.assignment_cell, RUData.getInstance().getAssignmentsDummy());
 		setListAdapter(adapter);
 	}
 	
@@ -44,7 +47,14 @@ public class AssignmentTableFragment extends ListFragment
 		// Notify the parent fragment that a detail view is being pushed
 		mParentFragment.displayingDetailView = true;
 		
+		// Fetch the assignment that was clicked
+		RUAssignment assignment = RUData.getInstance().getAssignmentsDummy().get(position);
+		
+		Log.i("AssignmentTableFragment", "Clicked assignment: " + assignment.getTitle());
+		
+		// Replace the list view with a detail view for the assignment
 		AssignmentDetailFragment detailFragment = new AssignmentDetailFragment();
+		detailFragment.setAssignment(assignment);
 		FragmentManager manager = mParentFragment.getChildFragmentManager();
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.replace(R.id.tab1container, detailFragment);

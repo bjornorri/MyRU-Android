@@ -50,7 +50,7 @@ public class TabContainerFragment2 extends Fragment
 			GradeTableFragment fragment = new GradeTableFragment();
 			FragmentManager manager = getChildFragmentManager();
 			FragmentTransaction transaction = manager.beginTransaction();
-			transaction.replace(R.id.tab1container, fragment);
+			transaction.replace(R.id.tab2container, fragment);
 			transaction.commit();
 		}
 		// If the list view is being displayed, close the app
