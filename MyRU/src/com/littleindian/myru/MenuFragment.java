@@ -4,41 +4,29 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MenuFragment extends Fragment
 {
 	private WebView mWebView;
 	private FragmentActivity mActivity;
+	private ProgressBar mProgressBar;
 	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState)
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		return inflater.inflate(R.layout.menu_webview, container, false);
-	}
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		
 		// Save the activity
 		mActivity = getActivity();
 		
-		// Link mWebView with the UI WebView
-		mWebView = (WebView) mActivity.findViewById(R.id.menuWebView);
-		
-		if(mWebView == null)
-		{
-			Log.i("Menu", "mWebView is null!!!");
-		}
+		// Inflate the view and link mWebView and mProgressBar to the UI
+		View view = inflater.inflate(R.layout.menu_webview, container, false);
+		mWebView = (WebView) view.findViewById(R.id.menuWebView);
+		mProgressBar = (ProgressBar) view.findViewById(R.id.menuProgressBar);
 		
 		// Configure settings for mWebView
 		mWebView.getSettings().setJavaScriptEnabled(true);
@@ -53,7 +41,10 @@ public class MenuFragment extends Fragment
 		
 		// Load the page
 		mWebView.loadUrl("http://malid.ru.is");
-	}
+		
+		// Return the view
+		return view;
+	};
 	
 	
 	// Custom WebViewClient for mWebView
@@ -62,18 +53,18 @@ public class MenuFragment extends Fragment
 		public void onPageStarted(WebView view, String url, android.graphics.Bitmap favicon)
 		{
 			// Hide mWebView and display progress bar
-			mActivity.findViewById(R.id.menuProgressBar).setVisibility(View.VISIBLE);
-			mActivity.findViewById(R.id.menuWebView).setVisibility(View.GONE);
+			mProgressBar.setVisibility(View.VISIBLE);
+			mWebView.setVisibility(View.GONE);
 		};
 		
 		public void onPageFinished(WebView view, String url)
 		{
-			// Hide progress bar and display mWebView
-			mActivity.findViewById(R.id.menuProgressBar).setVisibility(View.GONE);
-			mActivity.findViewById(R.id.menuWebView).setVisibility(View.VISIBLE);
-			
 			// Execute javascript to hide unnecessary elements on page
 			mWebView.loadUrl("javascript:var page=document.getElementsByClassName('item entry')[0];var bd=document.getElementById('bd');bd.innerHTML=page.innerHTML;var bla=document.getElementById('doc3');bla.setAttribute('id', '');bla.setAttribute('class', '');document.getElementById('ft').style.display='none'");
+			
+			// Hide progress bar and display mWebView
+			mProgressBar.setVisibility(View.GONE);
+			mWebView.setVisibility(View.VISIBLE);
 		};
 	};
 }
