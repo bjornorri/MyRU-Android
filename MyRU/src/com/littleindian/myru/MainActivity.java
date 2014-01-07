@@ -36,7 +36,7 @@ public class MainActivity extends FragmentActivity
 		View tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
 		((TextView)tabIndicator.findViewById(R.id.tabTitle)).setText("Assignments");
 		((ImageView)tabIndicator.findViewById(R.id.tabIcon)).setImageResource(R.drawable.assignments_icon);
-		mTabHost.addTab(mTabHost.newTabSpec(ApplicationConstants.tab1).setIndicator(tabIndicator), AssignmentTableFragment.class, null);
+		mTabHost.addTab(mTabHost.newTabSpec(ApplicationConstants.tab1).setIndicator(tabIndicator), TabContainerFragment1.class, null);
 		
 		// Grades tab
 		tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
@@ -60,5 +60,16 @@ public class MainActivity extends FragmentActivity
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
+	
+	@Override
+	public void onBackPressed()
+	{
+		if(mTabHost.getCurrentTab() == 0)
+		{
+			TabContainerFragment1 container = (TabContainerFragment1) getSupportFragmentManager().findFragmentByTag(ApplicationConstants.tab1);
+			container.onBackPressed();
+			return;
+		}
+		super.onBackPressed();
+	}
 }
