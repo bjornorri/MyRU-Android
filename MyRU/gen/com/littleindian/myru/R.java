@@ -46,8 +46,8 @@ public final class R {
         public static final int tab_color=0x7f020016;
     }
     public static final class id {
-        public static final int actionBarTitle=0x7f08000c;
-        public static final int action_settings=0x7f080012;
+        public static final int actionBarTitle=0x7f08000e;
+        public static final int action_settings=0x7f080014;
         public static final int assignmentCheckImage=0x7f080001;
         public static final int assignmentCourseLabel=0x7f080003;
         public static final int assignmentDateLabel=0x7f080004;
@@ -59,12 +59,14 @@ public final class R {
         public static final int gradeHeader=0x7f08000a;
         public static final int gradeNameLabel=0x7f080007;
         public static final int gradeRankLabel=0x7f080008;
-        public static final int logoutButton=0x7f08000d;
+        public static final int logoutButton=0x7f08000f;
+        public static final int menuProgressBar=0x7f08000d;
+        public static final int menuWebView=0x7f08000c;
         public static final int realtabcontent=0x7f080000;
-        public static final int tab1container=0x7f08000e;
-        public static final int tab2container=0x7f08000f;
-        public static final int tabIcon=0x7f080011;
-        public static final int tabTitle=0x7f080010;
+        public static final int tab1container=0x7f080010;
+        public static final int tab2container=0x7f080011;
+        public static final int tabIcon=0x7f080013;
+        public static final int tabTitle=0x7f080012;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -75,10 +77,11 @@ public final class R {
         public static final int grade_detailview=0x7f030005;
         public static final int grade_header=0x7f030006;
         public static final int grade_tableview=0x7f030007;
-        public static final int ru_action_bar=0x7f030008;
-        public static final int tab1_container=0x7f030009;
-        public static final int tab2_container=0x7f03000a;
-        public static final int tab_indicator=0x7f03000b;
+        public static final int menu_webview=0x7f030008;
+        public static final int ru_action_bar=0x7f030009;
+        public static final int tab1_container=0x7f03000a;
+        public static final int tab2_container=0x7f03000b;
+        public static final int tab_indicator=0x7f03000c;
     }
     public static final class menu {
         public static final int main=0x7f070000;
