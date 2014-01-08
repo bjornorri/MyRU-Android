@@ -2,8 +2,12 @@ package com.littleindian.myru;
 
 import java.util.ArrayList;
 
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.littleindian.myru.model.RUGrade;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -19,12 +23,31 @@ public class GradeTableFragment extends ListFragment
 {
 	private FragmentActivity mActivity;
 	private TabContainerFragment2 mParentFragment;
+	private PullToRefreshListView mListView;
+	private GradeAdapter mAdapter;
 	
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 	{
-		return inflater.inflate(R.layout.grade_tableview, container, false);
+		// Inflate the view
+		View view = inflater.inflate(R.layout.grade_tableview, container, false);
+		
+		// Link mListView with the UI
+		mListView = (PullToRefreshListView) view.findViewById(R.id.gradeListView);
+		
+		// Set the PullToRefresh listener
+		mListView.setOnRefreshListener(new OnRefreshListener<ListView>()
+		{
+			@Override
+			public void onRefresh(PullToRefreshBase<ListView> refreshView)
+			{
+				new Refresh().execute();
+			}
+		});
+		
+		// Return the view
+		return view;
 	}
 	
 	@Override
@@ -37,8 +60,8 @@ public class GradeTableFragment extends ListFragment
 		mParentFragment = (TabContainerFragment2) this.getParentFragment();
 		
 		// Set the list's adapter
-		GradeAdapter adapter = new GradeAdapter(mActivity, R.layout.grade_cell, RUData.getInstance().getGrades());
-		setListAdapter(adapter);
+		mAdapter = new GradeAdapter(mActivity, R.layout.grade_cell, RUData.getInstance().getGrades());
+		setListAdapter(mAdapter);
 	}
 	
 	
@@ -77,5 +100,30 @@ public class GradeTableFragment extends ListFragment
 		FragmentTransaction transaction = manager.beginTransaction();
 		transaction.replace(R.id.tab2container, detailFragment);
 		transaction.commit();
+	}
+	
+	
+	// AsyncTask to execute on PullToRefresh event
+	private class Refresh extends AsyncTask<Void, Void, Void>
+	{
+
+		@Override
+		protected Void doInBackground(Void... arg0)
+		{
+			RUData.getInstance().refreshData();
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result)
+		{
+			// Hide the pullToRefresh view
+			mListView.onRefreshComplete();
+			
+			// Refresh the list with the new data
+			mAdapter.notifyDataSetChanged();
+			
+			super.onPostExecute(result);
+		}
 	}
 }
