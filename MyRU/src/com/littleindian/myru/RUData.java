@@ -6,7 +6,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -64,7 +64,18 @@ public class RUData
     	SharedPreferences preferences = context.getSharedPreferences("com.littleindian.myru", Context.MODE_PRIVATE);
     	this.basicAuthentication = preferences.getString("Authentication", null);
     	
-    	// TODO: set username and password
+    	// Get username and password from basicAuthentication string
+    	if(this.basicAuthentication != null)
+    	{
+	    	String base64Credentials = this.basicAuthentication.substring("Basic".length()).trim();
+	        String credentials = new String(Base64.decode(base64Credentials, 0), Charset.forName("UTF-8"));
+	        
+	        final String[] auth = credentials.split(":",2);
+	        
+	        // Set the username and password
+	        this.username = auth[0];
+	        this.password = auth[1];
+    	}
     }
     
     public boolean userIsLoggedIn()
@@ -75,6 +86,16 @@ public class RUData
     public String getAuthentication()
     {
     	return basicAuthentication;
+    }
+    
+    public String getUsername()
+    {
+    	return username;
+    }
+    
+    public String getPassword()
+    {
+    	return password;
     }
     
     public ArrayList<ArrayList<RUGrade>> getGrades()

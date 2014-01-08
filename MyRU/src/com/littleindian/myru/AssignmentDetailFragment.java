@@ -67,7 +67,7 @@ public class AssignmentDetailFragment extends Fragment
 		public void onPageFinished(WebView view, String url)
 		{
 			// Execute javascript to hide unnecessary elements on page
-			mWebView.loadUrl("javascript:var page=document.getElementsByClassName('item entry')[0];var bd=document.getElementById('bd');bd.innerHTML=page.innerHTML;var bla=document.getElementById('doc3');bla.setAttribute('id', '');bla.setAttribute('class', '');document.getElementById('ft').style.display='none'");
+			mWebView.loadUrl("javascript:$('.ruHeader a').click(function(e){e.preventDefault()});$('.ruLeft').hide();$('.ruRight').hide();$('.ruFooter').hide();$('#headersearch').hide();$('.level1').hide();$('.resetSize').click();$('.increaseSize').click();$('.increaseSize').click()");
 			
 			// Hide progress bar and display mWebView
 			mProgressBar.setVisibility(View.GONE);
@@ -76,7 +76,7 @@ public class AssignmentDetailFragment extends Fragment
 		
 		public void onReceivedHttpAuthRequest(WebView view, android.webkit.HttpAuthHandler handler, String host, String realm)
 		{
-			handler.proceed("", "");
+			handler.proceed(RUData.getInstance().getUsername(), RUData.getInstance().getPassword());
 		};
 		
 		public void onReceivedSslError(WebView view, android.webkit.SslErrorHandler handler, android.net.http.SslError error)

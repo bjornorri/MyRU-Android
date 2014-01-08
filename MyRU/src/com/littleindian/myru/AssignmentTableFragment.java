@@ -34,7 +34,7 @@ public class AssignmentTableFragment extends ListFragment
 		mParentFragment = (TabContainerFragment1) this.getParentFragment();
 		
 		// Set the list's adapter
-		AssignmentAdapter adapter = new AssignmentAdapter(mActivity, R.layout.assignment_cell, RUData.getInstance().getAssignments());
+		AssignmentAdapter adapter = new AssignmentAdapter(mActivity, R.layout.assignment_cell, RUData.getInstance().getAssignmentsDummy());
 		setListAdapter(adapter);
 	}
 	
@@ -48,7 +48,7 @@ public class AssignmentTableFragment extends ListFragment
 		mParentFragment.displayingDetailView = true;
 		
 		// Fetch the assignment that was clicked
-		RUAssignment assignment = RUData.getInstance().getAssignments().get(position - 1);
+		RUAssignment assignment = RUData.getInstance().getAssignmentsDummy().get(position - 1);
 		
 		Log.i("AssignmentTableFragment", "Clicked assignment: " + assignment.getTitle());
 		
