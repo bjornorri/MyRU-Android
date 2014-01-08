@@ -2,7 +2,6 @@ package com.littleindian.myru;
 
 import java.util.ArrayList;
 
-import com.littleindian.myru.model.RUAssignment;
 import com.littleindian.myru.model.RUGrade;
 
 import android.os.Bundle;
@@ -38,7 +37,7 @@ public class GradeTableFragment extends ListFragment
 		mParentFragment = (TabContainerFragment2) this.getParentFragment();
 		
 		// Set the list's adapter
-		GradeAdapter adapter = new GradeAdapter(mActivity, R.layout.grade_cell, RUData.getInstance().getGradesDummy());
+		GradeAdapter adapter = new GradeAdapter(mActivity, R.layout.grade_cell, RUData.getInstance().getGrades());
 		setListAdapter(adapter);
 	}
 	
@@ -52,14 +51,20 @@ public class GradeTableFragment extends ListFragment
 		// Notify the parent fragment that a detail view is being pushed
 		mParentFragment.displayingDetailView = true;
 		
+		// position counts from 1, we count from 0
+		position--;
+		
 		// Fetch the grade that was clicked
 		int courseIndex = 0;
-    	ArrayList<ArrayList<RUGrade>> allGrades = RUData.getInstance().getGradesDummy();
+    	ArrayList<ArrayList<RUGrade>> allGrades = RUData.getInstance().getGrades();
     	while(position > allGrades.get(courseIndex).size())
     	{
     		position -= allGrades.get(courseIndex).size() + 1;
     		courseIndex++;
+    		Log.i("", "Course index: " + courseIndex);
     	}
+    	Log.i("GradeTableFragment", "Getting grade at courseIndex " + courseIndex + " and index " + (position - 1));
+    	
     	RUGrade grade = allGrades.get(courseIndex).get(position - 1);
     	
 		

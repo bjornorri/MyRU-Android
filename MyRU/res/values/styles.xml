@@ -25,5 +25,10 @@
 	    <item name="android:displayOptions">showCustom</item>
 	    <item name="android:customNavigationLayout">@layout/ru_action_bar</item>
 	</style>
+	
+	<style name="RUThemeNoActionBar" parent="android:Theme.Holo.Light">
+    	<item name="android:windowActionBar">true</item>
+    	<item name="android:windowNoTitle">true</item>
+	</style>
 
 </resources>

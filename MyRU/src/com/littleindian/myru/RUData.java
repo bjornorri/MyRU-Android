@@ -2,9 +2,11 @@ package com.littleindian.myru;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Base64;
 import android.util.Log;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,6 +29,8 @@ import com.littleindian.myru.model.RUGrade;
 public class RUData
 {
 	private Context context;
+	private String username;
+	private String password;
     private String basicAuthentication;
     private Document page;
     private ArrayList<RUAssignment> assignments;
@@ -44,6 +48,8 @@ public class RUData
     private RUData()
     {
     	context = null;
+    	username = null;
+    	password = null;
     	basicAuthentication = null;
     	page = null;
         assignments = new ArrayList<RUAssignment>();
@@ -57,6 +63,8 @@ public class RUData
     	// Load the basic authentication string
     	SharedPreferences preferences = context.getSharedPreferences("com.littleindian.myru", Context.MODE_PRIVATE);
     	this.basicAuthentication = preferences.getString("Authentication", null);
+    	
+    	// TODO: set username and password
     }
     
     public boolean userIsLoggedIn()
@@ -102,7 +110,7 @@ public class RUData
     	int statusCode = -1;
     	try
 		{
-			response = Jsoup.connect("https://myschool.ru.is/myschool/?Page=Exe&ID=1.12").header("Authorization", basicAuthentication).method(Method.GET).timeout(10 * 1000).execute();
+			response = Jsoup.connect("https://myschool.ru.is/myschool/?Page=Exe&ID=1.12").header("Authorization", this.basicAuthentication).method(Method.GET).timeout(10 * 1000).execute();
 			statusCode = response.statusCode();
 			Log.i("RUData", "Got status code, and its " + statusCode);
 		}
@@ -354,21 +362,21 @@ public class RUData
 		ArrayList<RUAssignment> data = new ArrayList<RUAssignment>();
 		
 		RUAssignment a = new RUAssignment();
-		a.setAssignmentURL("http://malid.ru.is");
+		a.setAssignmentURL("https://myschool.ru.is/myschool/?Page=Exe&ID=2.4&ViewMode=2&fagid=25070&verkID=42566");
 		a.setTitle("Bomblab");
 		a.setCourseName("Tölvuhögun");
 		a.setDueDate("13.01");
 		a.setHandedIn("Óskilað");
 		
 		RUAssignment b = new RUAssignment();
-		b.setAssignmentURL("http://malid.ru.is");
+		b.setAssignmentURL("https://myschool.ru.is/myschool/?Page=Exe&ID=2.4&ViewMode=2&fagid=25070&verkID=42566");
 		b.setTitle("Dæmatímaverkefni 5");
 		b.setCourseName("Reiknirit");
 		b.setDueDate("24.12");
 		b.setHandedIn("Skilað");
 		
 		RUAssignment c = new RUAssignment();
-		c.setAssignmentURL("http://malid.ru.is");
+		c.setAssignmentURL("https://myschool.ru.is/myschool/?Page=Exe&ID=2.4&ViewMode=2&fagid=25070&verkID=42566");
 		c.setTitle("Síðannarverkefni");
 		c.setCourseName("Hugbúnaðarfræði");
 		c.setDueDate("05.05");

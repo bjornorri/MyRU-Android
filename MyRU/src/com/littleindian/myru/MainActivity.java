@@ -1,8 +1,14 @@
 package com.littleindian.myru;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -18,8 +24,23 @@ public class MainActivity extends FragmentActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
 		// Set the context of RUData
 		RUData.getInstance().setContext(this);
+		
+		// Log out at startup to test login screen
+		//RUData.getInstance().setAuthentication(null);
+		
+		// If no user is logged in, finish this activity and go to login activity
+		if(!RUData.getInstance().userIsLoggedIn())
+		{
+			Log.i("", "Going straight to login screen");
+			finish();
+			// No animation
+			overridePendingTransition(0, 0);
+			startActivity(new Intent(getBaseContext(), LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+		}
+		
 		
 		/* TabHost setup begins*/
 		
@@ -82,5 +103,29 @@ public class MainActivity extends FragmentActivity
 		{
 			super.onBackPressed();
 		}
+	}
+	
+	public void logOut(View view)
+	{
+		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+		dialog.setTitle(R.string.logoutTitle);
+		dialog.setMessage(R.string.logoutMessage);
+		dialog.setPositiveButton(R.string.Yes, new OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				// Clear all data
+				RUData.getInstance().clearData();
+				finish();
+				startActivity(new Intent(getBaseContext(), LoginActivity.class));
+			}
+		});
+		dialog.setNegativeButton(R.string.No, null);
+		AlertDialog shown = dialog.show();
+		
+		TextView message = (TextView)shown.findViewById(android.R.id.message);
+        message.setGravity(Gravity.CENTER);
+        message.setTextSize((float) 16.0);
 	}
 }

@@ -3,7 +3,6 @@ package com.littleindian.myru;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +14,10 @@ import android.widget.ProgressBar;
 public class MenuFragment extends Fragment
 {
 	private WebView mWebView;
-	private FragmentActivity mActivity;
 	private ProgressBar mProgressBar;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	{
-		// Save the activity
-		mActivity = getActivity();
-		
+	{		
 		// Inflate the view and link mWebView and mProgressBar to the UI
 		View view = inflater.inflate(R.layout.menu_webview, container, false);
 		mWebView = (WebView) view.findViewById(R.id.menuWebView);
