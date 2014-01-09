@@ -83,6 +83,13 @@ public class RUData
     	return (basicAuthentication != null);
     }
     
+    // Has any data been loaded yet?
+    public boolean noDataLoaded()
+    {
+    	// If the page has been loaded, it can't be null
+    	return (page == null);
+    }
+    
     public String getAuthentication()
     {
     	return basicAuthentication;

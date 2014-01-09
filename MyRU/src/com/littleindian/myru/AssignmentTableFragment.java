@@ -16,12 +16,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 public class AssignmentTableFragment extends ListFragment
 {
 	private FragmentActivity mActivity;
 	private TabContainerFragment1 mParentFragment;
 	private PullToRefreshListView mListView;
+	private ProgressBar mProgressBar;
 	private AssignmentAdapter mAdapter;
 	
 	@Override
@@ -30,8 +32,9 @@ public class AssignmentTableFragment extends ListFragment
 		// Inflate the view
 		View view = inflater.inflate(R.layout.assignment_tableview, container, false);
 		
-		// Link mListView with the UI
+		// Link mListView and mProgressBar with the UI
 		mListView = (PullToRefreshListView) view.findViewById(R.id.assignmentListView);
+		mProgressBar = (ProgressBar) view.findViewById(R.id.assignmentListIndicator);
 		
 		// Set the PullToRefresh listener
 		mListView.setOnRefreshListener(new OnRefreshListener<ListView>()
@@ -42,6 +45,14 @@ public class AssignmentTableFragment extends ListFragment
 				new Refresh().execute();
 			}
 		});
+		
+		
+		// Load data if no data has been loaded since launch
+		if(RUData.getInstance().noDataLoaded())
+		{
+			Log.i("ATF", "Initial load");
+			new Refresh().execute();
+		}
 
 		// Return the view
 		return view;
@@ -57,7 +68,7 @@ public class AssignmentTableFragment extends ListFragment
 		mParentFragment = (TabContainerFragment1) this.getParentFragment();
 		
 		// Set the list's adapter
-		mAdapter = new AssignmentAdapter(mActivity, R.layout.assignment_cell, RUData.getInstance().getAssignmentsDummy());
+		mAdapter = new AssignmentAdapter(mActivity, R.layout.assignment_cell, RUData.getInstance().getAssignments());
 		setListAdapter(mAdapter);
 	}
 	
@@ -72,7 +83,7 @@ public class AssignmentTableFragment extends ListFragment
 		mParentFragment.displayingDetailView = true;
 		
 		// Fetch the assignment that was clicked
-		RUAssignment assignment = RUData.getInstance().getAssignmentsDummy().get(position - 1);
+		RUAssignment assignment = RUData.getInstance().getAssignments().get(position - 1);
 		
 		Log.i("AssignmentTableFragment", "Clicked assignment: " + assignment.getTitle());
 		
@@ -86,26 +97,46 @@ public class AssignmentTableFragment extends ListFragment
 	}
 	
 	// AsyncTask to execute on PullToRefresh event
-	private class Refresh extends AsyncTask<Void, Void, Void>
-	{
+		private class Refresh extends AsyncTask<Void, Void, Void>
+		{
+			@Override
+			protected void onPreExecute()
+			{
+				// If its not a pull refresh, show the indicator
+				if(!mListView.isRefreshing())
+				{
+					mProgressBar.setVisibility(View.VISIBLE);
+					mListView.setVisibility(View.GONE);
+				}
 
-		@Override
-		protected Void doInBackground(Void... arg0)
-		{
-			RUData.getInstance().refreshData();
-			return null;
-		}
-		
-		@Override
-		protected void onPostExecute(Void result)
-		{
-			// Hide the pullToRefresh view
-			mListView.onRefreshComplete();
+				super.onPreExecute();
+			}
+
+			@Override
+			protected Void doInBackground(Void... arg0)
+			{
+				RUData.getInstance().refreshData();
+				return null;
+			}
 			
-			// Refresh the list with the new data
-			mAdapter.notifyDataSetChanged();
-			
-			super.onPostExecute(result);
+			@Override
+			protected void onPostExecute(Void result)
+			{
+				if(!mListView.isRefreshing())
+				{
+					mProgressBar.setVisibility(View.GONE);
+					mListView.setVisibility(View.VISIBLE);
+				}
+				else
+				{
+					// Hide the pullToRefresh view
+					mListView.onRefreshComplete();
+				}
+				
+				// Refresh the list with the new data
+				mAdapter.notifyDataSetChanged();
+				
+				super.onPostExecute(result);
+			}
 		}
-	}
 }

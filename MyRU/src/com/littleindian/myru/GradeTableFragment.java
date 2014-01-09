@@ -18,12 +18,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 public class GradeTableFragment extends ListFragment
 {
 	private FragmentActivity mActivity;
 	private TabContainerFragment2 mParentFragment;
 	private PullToRefreshListView mListView;
+	private ProgressBar mProgressBar;
 	private GradeAdapter mAdapter;
 	
 	
@@ -33,8 +35,9 @@ public class GradeTableFragment extends ListFragment
 		// Inflate the view
 		View view = inflater.inflate(R.layout.grade_tableview, container, false);
 		
-		// Link mListView with the UI
+		// Link mListView and mProgressBar with the UI
 		mListView = (PullToRefreshListView) view.findViewById(R.id.gradeListView);
+		mProgressBar = (ProgressBar) view.findViewById(R.id.gradeListIndicator);
 		
 		// Set the PullToRefresh listener
 		mListView.setOnRefreshListener(new OnRefreshListener<ListView>()
@@ -45,6 +48,14 @@ public class GradeTableFragment extends ListFragment
 				new Refresh().execute();
 			}
 		});
+		
+		// Load data if no data has been loaded since launch
+		if(RUData.getInstance().noDataLoaded())
+		{
+			Log.i("GTF", "Initial load");
+			new Refresh().execute();
+		}
+		
 		
 		// Return the view
 		return view;
@@ -106,6 +117,18 @@ public class GradeTableFragment extends ListFragment
 	// AsyncTask to execute on PullToRefresh event
 	private class Refresh extends AsyncTask<Void, Void, Void>
 	{
+		@Override
+		protected void onPreExecute()
+		{
+			// If its not a pull refresh, show the indicator
+			if(!mListView.isRefreshing())
+			{
+				mProgressBar.setVisibility(View.VISIBLE);
+				mListView.setVisibility(View.GONE);
+			}
+
+			super.onPreExecute();
+		}
 
 		@Override
 		protected Void doInBackground(Void... arg0)
@@ -117,8 +140,16 @@ public class GradeTableFragment extends ListFragment
 		@Override
 		protected void onPostExecute(Void result)
 		{
-			// Hide the pullToRefresh view
-			mListView.onRefreshComplete();
+			if(!mListView.isRefreshing())
+			{
+				mProgressBar.setVisibility(View.GONE);
+				mListView.setVisibility(View.VISIBLE);
+			}
+			else
+			{
+				// Hide the pullToRefresh view
+				mListView.onRefreshComplete();
+			}
 			
 			// Refresh the list with the new data
 			mAdapter.notifyDataSetChanged();
