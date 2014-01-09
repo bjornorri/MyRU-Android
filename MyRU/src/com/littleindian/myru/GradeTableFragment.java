@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 public class GradeTableFragment extends ListFragment
 {
@@ -153,5 +154,14 @@ public class GradeTableFragment extends ListFragment
 			
 			super.onPostExecute(result);
 		}
+	}
+	
+	@Override
+	public void onResume()
+	{
+		// Set the action bar title
+		TextView title = (TextView) getActivity().findViewById(R.id.actionBarTitle);
+		title.setText("Grades");
+		super.onResume();
 	}
 }

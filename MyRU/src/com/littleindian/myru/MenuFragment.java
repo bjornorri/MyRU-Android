@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class MenuFragment extends Fragment
@@ -62,4 +63,13 @@ public class MenuFragment extends Fragment
 			mWebView.setVisibility(View.VISIBLE);
 		};
 	};
+	
+	@Override
+	public void onResume()
+	{
+		// Set the action bar title
+		TextView title = (TextView) getActivity().findViewById(R.id.actionBarTitle);
+		title.setText("Málið");
+		super.onResume();
+	}
 }

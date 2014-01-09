@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class AssignmentDetailFragment extends Fragment
@@ -22,6 +23,11 @@ public class AssignmentDetailFragment extends Fragment
 	public void setAssignment(RUAssignment assignment)
 	{
 		this.assignment = assignment;
+	}
+	
+	public RUAssignment getAssignment()
+	{
+		return this.assignment;
 	}
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -80,4 +86,13 @@ public class AssignmentDetailFragment extends Fragment
 			handler.proceed();
 		};
 	};
+	
+	@Override
+	public void onResume()
+	{
+		// Set the action bar title
+		TextView title = (TextView) getActivity().findViewById(R.id.actionBarTitle);
+		title.setText(this.assignment.getTitle());
+		super.onResume();
+	}
 }

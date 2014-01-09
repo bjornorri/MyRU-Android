@@ -59,4 +59,13 @@ public class TabContainerFragment2 extends Fragment
 			mActivity.finish();
 		}
 	}
+
+	public String getTitle()
+	{
+		if(displayingDetailView == false)
+		{
+			return "Grades Achieved";
+		}
+		return "me";
+	}
 }

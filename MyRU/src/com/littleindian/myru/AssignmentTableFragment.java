@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 public class AssignmentTableFragment extends ListFragment
 {
@@ -97,46 +98,55 @@ public class AssignmentTableFragment extends ListFragment
 	}
 	
 	// AsyncTask to execute on PullToRefresh event
-		private class Refresh extends AsyncTask<Void, Void, Void>
+	private class Refresh extends AsyncTask<Void, Void, Void>
+	{
+		@Override
+		protected void onPreExecute()
 		{
-			@Override
-			protected void onPreExecute()
+			// If its not a pull refresh, show the indicator
+			if(!mListView.isRefreshing())
 			{
-				// If its not a pull refresh, show the indicator
-				if(!mListView.isRefreshing())
-				{
-					mProgressBar.setVisibility(View.VISIBLE);
-					mListView.setVisibility(View.GONE);
-				}
-
-				super.onPreExecute();
+				mProgressBar.setVisibility(View.VISIBLE);
+				mListView.setVisibility(View.GONE);
 			}
 
-			@Override
-			protected Void doInBackground(Void... arg0)
+			super.onPreExecute();
+		}
+
+		@Override
+		protected Void doInBackground(Void... arg0)
+		{
+			RUData.getInstance().refreshData();
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result)
+		{
+			if(!mListView.isRefreshing())
 			{
-				RUData.getInstance().refreshData();
-				return null;
+				mProgressBar.setVisibility(View.GONE);
+				mListView.setVisibility(View.VISIBLE);
+			}
+			else
+			{
+				// Hide the pullToRefresh view
+				mListView.onRefreshComplete();
 			}
 			
-			@Override
-			protected void onPostExecute(Void result)
-			{
-				if(!mListView.isRefreshing())
-				{
-					mProgressBar.setVisibility(View.GONE);
-					mListView.setVisibility(View.VISIBLE);
-				}
-				else
-				{
-					// Hide the pullToRefresh view
-					mListView.onRefreshComplete();
-				}
-				
-				// Refresh the list with the new data
-				mAdapter.notifyDataSetChanged();
-				
-				super.onPostExecute(result);
-			}
+			// Refresh the list with the new data
+			mAdapter.notifyDataSetChanged();
+			
+			super.onPostExecute(result);
 		}
+	}
+	
+	@Override
+	public void onResume()
+	{
+		// Set the action bar title
+		TextView title = (TextView) getActivity().findViewById(R.id.actionBarTitle);
+		title.setText("Assignments");
+		super.onResume();
+	}
 }

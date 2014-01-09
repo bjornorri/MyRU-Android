@@ -2,16 +2,11 @@ package com.littleindian.myru;
 
 import com.littleindian.myru.model.RUGrade;
 
-import android.graphics.Paint;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class GradeDetailFragment extends Fragment
@@ -21,7 +16,7 @@ public class GradeDetailFragment extends Fragment
 	private TextView mGradeLabel;
 	private TextView mRankLabel;
 	private TextView mFeedbackView;
-	private ImageView mImage;
+	//private ImageView mImage;
 	
 	
 	public void setGrade(RUGrade grade)
@@ -40,7 +35,7 @@ public class GradeDetailFragment extends Fragment
 		mGradeLabel = (TextView) view.findViewById(R.id.gradeLabel);
 		mRankLabel = (TextView) view.findViewById(R.id.rankLabel);
 		mFeedbackView = (TextView) view.findViewById(R.id.feedbackView);
-		mImage = (ImageView) view.findViewById(R.id.ruimage);
+		//mImage = (ImageView) view.findViewById(R.id.ruimage);
 		
 		// Display the information about the RUGrade
 		mCourseLabel.setText(grade.getCourse());
@@ -60,5 +55,14 @@ public class GradeDetailFragment extends Fragment
 		
 		// Return the view
 		return view;
+	}
+	
+	@Override
+	public void onResume()
+	{
+		// Set the action bar title
+		TextView title = (TextView) getActivity().findViewById(R.id.actionBarTitle);
+		title.setText(this.grade.getAssignmentName());
+		super.onResume();
 	}
 }

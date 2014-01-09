@@ -16,7 +16,7 @@ public class TabContainerFragment1 extends Fragment
 	private FragmentActivity mActivity;
 	
 	// This is set to true when a detail view is pushed...
-	// ...determines the behaviour of the back button
+	// ...determines the behavior of the back button
 	public boolean displayingDetailView;
 	
 	@Override
@@ -60,6 +60,19 @@ public class TabContainerFragment1 extends Fragment
 		else
 		{
 			mActivity.finish();
+		}
+	}
+	
+	public String getTitle()
+	{
+		if(displayingDetailView == false)
+		{
+			return "Assignments";
+		}
+		else
+		{
+			AssignmentDetailFragment fragment = (AssignmentDetailFragment) getChildFragmentManager().getFragments().get(0);
+			return fragment.getAssignment().getTitle();
 		}
 	}
 }
