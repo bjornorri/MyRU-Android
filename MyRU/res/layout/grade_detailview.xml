@@ -1,14 +1,101 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
-
-    <Button
-        android:id="@+id/button1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+        
+    <ImageView
+        android:id="@+id/ruimage"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentTop="true"
+		android:layout_marginRight="12dp"
+		android:layout_marginLeft="16dp"
+		android:layout_marginTop="4dp"
+		android:src="@drawable/ic_ru_spinner"
+		android:contentDescription="@null" />
+    
+    
+    <TextView
+        android:id="@+id/courseLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="22sp"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Button" />
+        android:layout_marginTop="12dp"
+        android:singleLine="true" />
+    
+    
+    <View
+        android:id="@+id/redline"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/ruimage"
+        android:background="#FF0000" />
+    
+    <TextView
+        android:id="@+id/grade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/redline"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_alignParentLeft="true"
+        android:text="@string/Grade"
+        android:textSize="17sp" />
+    
+    <TextView
+        android:id="@+id/gradeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/redline"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true"
+        android:textSize="17sp" />
+    
+    <TextView
+        android:id="@+id/rank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/grade"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="20dp"
+        android:layout_alignParentLeft="true"
+        android:text="@string/Rank"
+        android:textSize="17sp" />
+    
+    <TextView
+        android:id="@+id/rankLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/gradeLabel"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true"
+        android:textSize="17sp" />
+    
+    <ScrollView
+    android:id="@+id/scrollView"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/rank"
+    android:layout_marginTop="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="20dp"
+    android:scrollbars="vertical"
+    android:fillViewport="true" >
+
+        <TextView
+        android:id="@+id/feedbackView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp" />
+
+    </ScrollView>
+    
+    
+    
 
 </RelativeLayout>

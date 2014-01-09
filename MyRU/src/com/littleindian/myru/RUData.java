@@ -322,7 +322,15 @@ public class RUData
     						case 2:
     							thisGrade.setRank(child.text());
     						case 3:
-    							thisGrade.setFeedback(child.text());
+    							if(child.textNodes().size() > 0)
+    							{
+    								thisGrade.setFeedback(child.textNodes().get(0).getWholeText());
+    							}
+    							// Think I don't need this...but just to be sure
+    							else
+    							{
+    								thisGrade.setFeedback(child.text());
+    							}
     						default:
     							break;
     						}

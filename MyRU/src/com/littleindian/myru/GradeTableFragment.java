@@ -100,9 +100,6 @@ public class GradeTableFragment extends ListFragment
     	Log.i("GradeTableFragment", "Getting grade at courseIndex " + courseIndex + " and index " + (position - 1));
     	
     	RUGrade grade = allGrades.get(courseIndex).get(position - 1);
-    	
-		
-		Log.i("GradeTableFragment", "Clicked grade: " + grade.getAssignmentName());
 		
 		// Replace the list view with a detail view for the assignment
 		GradeDetailFragment detailFragment = new GradeDetailFragment();

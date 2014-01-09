@@ -19,5 +19,7 @@
     <string name="Icon">Icon</string>
     <string name="noAssignments">No Assignments</string>
     <string name="noGrades">No Grades</string>
+    <string name="Grade">Grade:</string>
+    <string name="Rank">Rank:</string>
 
 </resources>

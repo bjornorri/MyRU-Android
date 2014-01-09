@@ -29,6 +29,16 @@ public class RUGrade
     {
         return rank;
     }
+    
+    // Returns the rank without "Röð: "
+    public String getRankOnly()
+    {
+    	if(rank.length() > 1)
+    	{
+    		return rank.substring(5);
+    	}
+    	return "";
+    }
 
     public String getFeedback()
     {
