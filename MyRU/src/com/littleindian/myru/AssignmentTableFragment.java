@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +50,6 @@ public class AssignmentTableFragment extends ListFragment
 		// Load data if no data has been loaded since launch
 		if(RUData.getInstance().noDataLoaded())
 		{
-			Log.i("ATF", "Initial load");
 			new Refresh().execute();
 		}
 
@@ -85,8 +83,6 @@ public class AssignmentTableFragment extends ListFragment
 		
 		// Fetch the assignment that was clicked
 		RUAssignment assignment = RUData.getInstance().getAssignments().get(position - 1);
-		
-		Log.i("AssignmentTableFragment", "Clicked assignment: " + assignment.getTitle());
 		
 		// Replace the list view with a detail view for the assignment
 		AssignmentDetailFragment detailFragment = new AssignmentDetailFragment();

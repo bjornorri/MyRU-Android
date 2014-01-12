@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Base64;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,8 +53,6 @@ public class LoginActivity extends Activity
 		String stringToEncode = username + ":" + password;
 		
 		String basicAuthentication = "Basic " + Base64.encodeToString(stringToEncode.getBytes(), 0);
-		
-		Log.i("loginActivity", "Basic Auth: " + basicAuthentication);
 		
 		// Save it for login persistence
 		RUData.getInstance().setAuthentication(basicAuthentication);

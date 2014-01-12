@@ -16,7 +16,6 @@ public class GradeDetailFragment extends Fragment
 	private TextView mGradeLabel;
 	private TextView mRankLabel;
 	private TextView mFeedbackView;
-	//private ImageView mImage;
 	
 	
 	public void setGrade(RUGrade grade)
@@ -35,7 +34,6 @@ public class GradeDetailFragment extends Fragment
 		mGradeLabel = (TextView) view.findViewById(R.id.gradeLabel);
 		mRankLabel = (TextView) view.findViewById(R.id.rankLabel);
 		mFeedbackView = (TextView) view.findViewById(R.id.feedbackView);
-		//mImage = (ImageView) view.findViewById(R.id.ruimage);
 		
 		// Display the information about the RUGrade
 		mCourseLabel.setText(grade.getCourse());

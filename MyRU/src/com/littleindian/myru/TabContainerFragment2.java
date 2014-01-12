@@ -14,7 +14,7 @@ public class TabContainerFragment2 extends Fragment
 	private FragmentActivity mActivity;
 	
 	// This is set to true when a detail view is pushed...
-	// ...determines the behaviour of the back button
+	// ...determines the behavior of the back button
 	public boolean displayingDetailView;
 	
 	@Override

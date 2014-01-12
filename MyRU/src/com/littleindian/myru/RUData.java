@@ -3,7 +3,6 @@ package com.littleindian.myru;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
-import android.util.Log;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -140,25 +139,21 @@ public class RUData
 		{
 			response = Jsoup.connect("https://myschool.ru.is/myschool/?Page=Exe&ID=1.12").header("Authorization", this.basicAuthentication).method(Method.GET).timeout(10 * 1000).execute();
 			statusCode = response.statusCode();
-			Log.i("RUData", "Got status code, and its " + statusCode);
 		}
     	catch (IOException e)
 		{
-			Log.e("loadPage()", "Connection failed!");
 			statusCode = 401;
 			e.printStackTrace();
 		}
     	
     	if(statusCode == 200)
     	{
-    		Log.i("loadPage()", "Connection successful!");
     		try
 			{
 				page = response.parse();
 			}
     		catch (IOException e)
 			{
-				Log.e("loadPage()", "Failed to parse response");
 				e.printStackTrace();
 			}
     	}
@@ -171,7 +166,6 @@ public class RUData
     	
     	if(statusCode == 200)
     	{
-    		Log.i("RUData", "Refreshing data");
     		assignments.clear();
     		grades.clear();
     		parseHTML();
@@ -181,14 +175,13 @@ public class RUData
     
     public void clearData()
     {
-    	Log.i("RUData", "Clearing data");
     	assignments.clear();
     	grades.clear();
     	page = null;
     	setAuthentication(null);
     }
     
- // Parsing
+    // Parsing
 
     public void parseHTML()
     {
@@ -201,7 +194,6 @@ public class RUData
     		
     		if(tables.size() == 2)
     		{
-    			Log.i("RUData", "Found 2 tables");
     			jsoupAssignments = page.select("div.ruContentPage > center > table.ruTable > tbody > tr");
     			jsoupGrades = page.select("div.ruContentPage > center.eq(2) > table > tbody > tr");
     		}
@@ -221,7 +213,6 @@ public class RUData
     		}
     		else
     		{
-    			Log.i("RUData", "No tables found!");
     			return;
     		}
     	}
@@ -401,7 +392,7 @@ public class RUData
     }
     
     
-    // Dummy method
+   /* // Dummy method
     public ArrayList<RUAssignment> getAssignmentsDummy()
     {	
 		ArrayList<RUAssignment> data = new ArrayList<RUAssignment>();
@@ -472,5 +463,5 @@ public class RUData
     	grades.add(reir);
     	
     	return grades;
-    }
+    }*/
 }

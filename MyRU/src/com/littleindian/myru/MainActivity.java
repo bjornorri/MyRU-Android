@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,7 +33,6 @@ public class MainActivity extends FragmentActivity
 		// If no user is logged in, finish this activity and go to login activity
 		if(!RUData.getInstance().userIsLoggedIn())
 		{
-			Log.i("", "Going straight to login screen");
 			finish();
 			// No animation
 			overridePendingTransition(0, 0);

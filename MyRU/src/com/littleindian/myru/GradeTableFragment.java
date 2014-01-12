@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +52,6 @@ public class GradeTableFragment extends ListFragment
 		// Load data if no data has been loaded since launch
 		if(RUData.getInstance().noDataLoaded())
 		{
-			Log.i("GTF", "Initial load");
 			new Refresh().execute();
 		}
 		
@@ -96,9 +94,7 @@ public class GradeTableFragment extends ListFragment
     	{
     		position -= allGrades.get(courseIndex).size() + 1;
     		courseIndex++;
-    		Log.i("", "Course index: " + courseIndex);
     	}
-    	Log.i("GradeTableFragment", "Getting grade at courseIndex " + courseIndex + " and index " + (position - 1));
     	
     	RUGrade grade = allGrades.get(courseIndex).get(position - 1);
 		
