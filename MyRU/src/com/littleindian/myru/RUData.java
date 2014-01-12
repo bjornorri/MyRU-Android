@@ -207,8 +207,17 @@ public class RUData
     		}
     		else if(tables.size() == 1)
     		{
-    			Log.i("RUData", "Found 1 table");
-    			jsoupGrades = page.select("div.ruContentPage > center > table.ruTable > tbody > tr");
+    			Elements tableHeader = page.select("div.ruContentPage > h4");
+    			String header = tableHeader.get(0).text();
+    			
+    			if(header.equals("Næstu verkefni"))
+    			{
+    				jsoupAssignments = page.select("div.ruContentPage > center > table.ruTable > tbody > tr");
+    			}
+    			else
+    			{
+    				jsoupGrades = page.select("div.ruContentPage > center > table.ruTable > tbody > tr");
+    			}
     		}
     		else
     		{

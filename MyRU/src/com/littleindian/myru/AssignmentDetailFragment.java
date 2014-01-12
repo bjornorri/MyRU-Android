@@ -49,7 +49,7 @@ public class AssignmentDetailFragment extends Fragment
 		mWebView.setWebViewClient(mWebViewClient);
 		
 		// Load the page
-		mWebView.loadUrl(assignment.getAssignmentURL());
+		mWebView.loadUrl("https://myschool.ru.is/myschool/" + assignment.getAssignmentURL());
 		
 		// Return the view
 		return view;
