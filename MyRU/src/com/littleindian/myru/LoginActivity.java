@@ -43,7 +43,7 @@ public class LoginActivity extends Activity
 	
 	public void loginButtonPressed(View view)
 	{	
-		// Get the username and password and construct the basic authentication string needed for the requeset header
+		// Get the username and password and construct the basic authentication string needed for the request header
 		EditText usernameField = (EditText)findViewById(R.id.usernameField);
 		EditText passwordField = (EditText)findViewById(R.id.passwordField);
 		

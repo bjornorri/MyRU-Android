@@ -60,7 +60,7 @@ public class AssignmentAdapter extends ArrayAdapter<RUAssignment>
 		
 		RUAssignment assignment = data.get(position);
 
-		if(assignment.getHandedIn().equals("Skilað"))
+		if(!assignment.getHandedIn().equals("Óskilað"))
 		{
 			// Make check image visible
 			holder.checkImage.setVisibility(View.VISIBLE);
