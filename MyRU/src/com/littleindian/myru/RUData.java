@@ -3,6 +3,7 @@ package com.littleindian.myru;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
+import android.util.Log;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -157,6 +158,7 @@ public class RUData
 				e.printStackTrace();
 			}
     	}
+    	Log.i("", "Finished loading page");
     	return statusCode;
     }
     
@@ -194,11 +196,13 @@ public class RUData
     		
     		if(tables.size() == 2)
     		{
-    			jsoupAssignments = page.select("div.ruContentPage > center > table.ruTable > tbody > tr");
-    			jsoupGrades = page.select("div.ruContentPage > center.eq(2) > table > tbody > tr");
+    			Log.i("", "Found 2 tables");
+    			jsoupAssignments = tables.get(0).select("tbody > tr");
+    			jsoupGrades = tables.get(1).select("tbody > tr");
     		}
     		else if(tables.size() == 1)
     		{
+    			Log.i("", "Found 1 table");
     			Elements tableHeader = page.select("div.ruContentPage > h4");
     			String header = tableHeader.get(0).text();
     			
@@ -249,6 +253,7 @@ public class RUData
     							assignments.get(editing).setDueDate(child.text().substring(0, 5));
     							break;
     						case 1:
+    							Log.i("", "Staða skila: " + child.text());
     							assignments.get(editing).setHandedIn(child.text());
     						case 2:
     							assignments.get(editing).setCourseId(child.text());
