@@ -3,7 +3,6 @@ package com.littleindian.myru;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
-import android.util.Log;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -18,6 +17,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.littleindian.myru.model.RUClass;
 import com.littleindian.myru.model.RUAssignment;
 import com.littleindian.myru.model.RUGrade;
 
@@ -33,6 +33,7 @@ public class RUData
 	private String password;
     private String basicAuthentication;
     private Document page;
+    private ArrayList<RUClass> classes;
     private ArrayList<RUAssignment> assignments;
     private ArrayList<ArrayList<RUGrade>> grades;
 
@@ -52,6 +53,7 @@ public class RUData
     	password = null;
     	basicAuthentication = null;
     	page = null;
+    	classes = new ArrayList<RUClass>();
         assignments = new ArrayList<RUAssignment>();
         grades = new ArrayList<ArrayList<RUGrade>>();
     }
@@ -103,6 +105,35 @@ public class RUData
     public String getPassword()
     {
     	return password;
+    }
+    
+    public ArrayList<RUClass> getClasses()
+    {
+    	return classes;
+    }
+    
+    public ArrayList<RUClass> getNextClasses()
+    {
+    	ArrayList<RUClass> nextClasses = new ArrayList<RUClass>();
+    	
+    	for(RUClass c : getClasses())
+    	{
+    		if(!c.isOver())
+    		{
+    			nextClasses.add(c);
+    		}
+    	}
+    	return nextClasses;
+    }
+    
+    public RUClass getNextClass()
+    {
+    	ArrayList<RUClass> nextClasses = getNextClasses();
+    	if(!nextClasses.isEmpty())
+    	{
+    		return nextClasses.get(0);
+    	}
+    	return null;
     }
     
     public ArrayList<ArrayList<RUGrade>> getGrades()
@@ -158,7 +189,6 @@ public class RUData
 				e.printStackTrace();
 			}
     	}
-    	Log.i("", "Finished loading page");
     	return statusCode;
     }
     
@@ -196,13 +226,11 @@ public class RUData
     		
     		if(tables.size() == 2)
     		{
-    			Log.i("", "Found 2 tables");
     			jsoupAssignments = tables.get(0).select("tbody > tr");
     			jsoupGrades = tables.get(1).select("tbody > tr");
     		}
     		else if(tables.size() == 1)
     		{
-    			Log.i("", "Found 1 table");
     			Elements tableHeader = page.select("div.ruContentPage > h4");
     			String header = tableHeader.get(0).text();
     			
@@ -253,7 +281,6 @@ public class RUData
     							assignments.get(editing).setDueDate(child.text().substring(0, 5));
     							break;
     						case 1:
-    							Log.i("", "Staða skila: " + child.text());
     							assignments.get(editing).setHandedIn(child.text());
     						case 2:
     							assignments.get(editing).setCourseId(child.text());

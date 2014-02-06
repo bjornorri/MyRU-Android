@@ -56,7 +56,7 @@ public class MenuFragment extends Fragment
 		public void onPageFinished(WebView view, String url)
 		{
 			// Execute javascript to hide unnecessary elements on page
-			mWebView.loadUrl("javascript:var page=document.getElementsByClassName('item entry')[0];var bd=document.getElementById('bd');bd.innerHTML=page.innerHTML;var bla=document.getElementById('doc3');bla.setAttribute('id', '');bla.setAttribute('class', '');document.getElementById('ft').style.display='none'");
+			mWebView.loadUrl("javascript:(function(){var page=document.getElementsByClassName('item entry')[0];var bd=document.getElementById('bd');bd.innerHTML=page.innerHTML;var bla=document.getElementById('doc3');bla.setAttribute('id', '');bla.setAttribute('class', '');document.getElementById('ft').style.display='none'})()");
 			
 			// Hide progress bar and display mWebView
 			mProgressBar.setVisibility(View.GONE);
