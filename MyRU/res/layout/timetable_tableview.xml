@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/timeTableListView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="#E4E4E4"
+    	android:dividerHeight="1dp"
+    	android:background="#FFFFFF"
+    	ptr:ptrDrawable="@drawable/ic_ru_spinner" >
+    </com.handmark.pulltorefresh.library.PullToRefreshListView>
+    
+    <!-- TextView to show when the list is empty -->
+    
+    <RelativeLayout
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+         
+	    <TextView
+	        android:id="@+id/emptyTimeTableText"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentTop="true"
+	        android:layout_centerHorizontal="true"
+	        android:layout_marginTop="12dp"
+	        android:textSize="24sp"
+	        android:textColor="#C0C0C0"
+	        android:text="@string/noClasses" />
+    </RelativeLayout>
+    
+    <ProgressBar
+        android:id="@+id/timeTableListIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+    
+</RelativeLayout>

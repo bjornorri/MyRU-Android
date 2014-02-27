@@ -142,7 +142,7 @@ public class AssignmentTableFragment extends ListFragment
 	{
 		// Set the action bar title
 		TextView title = (TextView) getActivity().findViewById(R.id.actionBarTitle);
-		title.setText("Assignments");
+		title.setText("Verkefni");
 		super.onResume();
 	}
 }

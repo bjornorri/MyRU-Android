@@ -157,7 +157,7 @@ public class GradeTableFragment extends ListFragment
 	{
 		// Set the action bar title
 		TextView title = (TextView) getActivity().findViewById(R.id.actionBarTitle);
-		title.setText("Grades");
+		title.setText("Einkunnir");
 		super.onResume();
 	}
 }

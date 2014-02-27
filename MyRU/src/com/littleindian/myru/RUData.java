@@ -7,8 +7,11 @@ import android.util.Base64;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
@@ -25,13 +28,14 @@ import com.littleindian.myru.model.RUGrade;
  * Created by bjornorri on 24/12/13.
 
  */
-//
+
 public class RUData
 {
 	private Context context;
 	private String username;
 	private String password;
     private String basicAuthentication;
+    private Document timeTablePage;
     private Document page;
     private ArrayList<RUClass> classes;
     private ArrayList<RUAssignment> assignments;
@@ -80,6 +84,11 @@ public class RUData
     	}
     }
     
+    public Context getContext()
+    {
+    	return context;
+    }
+    
     public boolean userIsLoggedIn()
     {
     	return (basicAuthentication != null);
@@ -112,30 +121,6 @@ public class RUData
     	return classes;
     }
     
-    public ArrayList<RUClass> getNextClasses()
-    {
-    	ArrayList<RUClass> nextClasses = new ArrayList<RUClass>();
-    	
-    	for(RUClass c : getClasses())
-    	{
-    		if(!c.isOver())
-    		{
-    			nextClasses.add(c);
-    		}
-    	}
-    	return nextClasses;
-    }
-    
-    public RUClass getNextClass()
-    {
-    	ArrayList<RUClass> nextClasses = getNextClasses();
-    	if(!nextClasses.isEmpty())
-    	{
-    		return nextClasses.get(0);
-    	}
-    	return null;
-    }
-    
     public ArrayList<ArrayList<RUGrade>> getGrades()
     {
     	return grades;
@@ -162,6 +147,46 @@ public class RUData
     	}
     	editor.commit();
     }
+    // Page loading
+    
+    public int loadTimeTablePage()
+    {
+    	Response response = null;
+    	int statusCode = -1;
+    	
+    	try
+		{
+			response = Jsoup.connect("https://myschool.ru.is/myschool/?Page=Exe&ID=3.2").header("Authorization", this.basicAuthentication).method(Method.GET).timeout(10 * 1000).execute();
+			statusCode = response.statusCode();
+		}
+    	catch (IOException e)
+		{
+    		// Network error
+			if(e.getClass().getPackage().getName().equalsIgnoreCase("java.net"))
+    		{
+    			statusCode = 408;
+    		}
+			// Probably wrong login data
+			else
+			{
+				statusCode = 401;
+			}
+			e.printStackTrace();
+		}
+    	
+    	if(statusCode == 200)
+    	{
+    		try
+			{
+				timeTablePage = response.parse();
+			}
+    		catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+    	}
+    	return statusCode;
+    }
     
     public int loadPage()
     {
@@ -174,7 +199,16 @@ public class RUData
 		}
     	catch (IOException e)
 		{
-			statusCode = 401;
+    		// Network error
+			if(e.getClass().getPackage().getName().equalsIgnoreCase("java.net"))
+    		{
+    			statusCode = 408;
+    		}
+			// Probably wrong login data
+			else
+			{
+				statusCode = 401;
+			}
 			e.printStackTrace();
 		}
     	
@@ -194,22 +228,37 @@ public class RUData
     
     public int refreshData()
     {
-    	int statusCode = loadPage();
+    	int statusCode1 = loadPage();
+    	int statusCode2 = loadTimeTablePage();
     	
-    	if(statusCode == 200)
+    	if(statusCode1 == 200 && statusCode2 == 200)
     	{
+    		classes.clear();
     		assignments.clear();
     		grades.clear();
     		parseHTML();
+    		return statusCode1;
     	}
-    	return statusCode;
+    	else if(statusCode1 == 200)
+    	{
+    		return statusCode2;
+    	}
+    	else if(statusCode2 == 200)
+    	{
+    		return statusCode1;
+    	}
+    	return statusCode1;
     }
     
     public void clearData()
     {
+    	classes.clear();
     	assignments.clear();
     	grades.clear();
+    	timeTablePage = null;
     	page = null;
+    	username = null;
+    	password = null;
     	setAuthentication(null);
     }
     
@@ -217,11 +266,13 @@ public class RUData
 
     public void parseHTML()
     {
+    	Elements jsoupClasses = null;
     	Elements jsoupAssignments = null;
 		Elements jsoupGrades = null;
 		
-    	if(page != null)
+    	if(page != null && timeTablePage != null)
     	{
+    		// Parse assignments and grades
     		Elements tables = page.getElementsByClass("ruTable");
     		
     		if(tables.size() == 2)
@@ -243,17 +294,147 @@ public class RUData
     				jsoupGrades = page.select("div.ruContentPage > center > table.ruTable > tbody > tr");
     			}
     		}
-    		else
+    		
+    		// Parse classes
+    		Elements ruTables = timeTablePage.getElementsByClass("ruTable");
+    		if(ruTables.size() > 0)
     		{
-    			return;
+    			jsoupClasses = ruTables.get(0).select("tbody > tr");
     		}
     	}
+    	parseClasses(jsoupClasses);
     	parseAssignments(jsoupAssignments);
     	parseGrades(jsoupGrades);
     	return;
     }
     
-    // Test if this works correctly as soon as an assignment is put up on MySchool
+    private void parseClasses(Elements jsoupClasses)
+    {
+    	if(jsoupClasses != null)
+    	{
+    		// Get a number for the day of the week, this is used as a column index for the timetable
+    		Date now = new Date();
+    		Calendar c = Calendar.getInstance();
+    		c.setTime(now);
+    		int columnIndex = c.get(Calendar.DAY_OF_WEEK);
+    		
+    		// Extract the rows that contain valuable data
+    		ArrayList<Element> rows = new ArrayList<Element>();
+    		for(int i = 3; i < jsoupClasses.size() - 1; i++)
+    		{
+    			rows.add(jsoupClasses.get(i));
+    		}
+    		
+    		for(Element row : rows)
+    		{
+    			if(row.children().size() > 0)
+    			{
+    				Elements columns = row.children();
+    				
+    				// There should be 8 columns
+    				if(columns.size() == 8)
+    				{
+    					// Fetch today's column from the row
+    					Element todayColumn = columns.get(columnIndex);
+    					Elements columnContents = todayColumn.children();
+    					
+    					
+    					for(Element child : columnContents)
+    					{
+    						if(child.tagName().equals("span"))
+    						{
+    							String infoString = child.attr("title");
+    							String[] info = infoString.split("\n");
+    							
+    							// Set RUClass attributes, careful about newlines in strings
+    							RUClass cls = new RUClass();
+    							
+    							// Set course
+    							cls.setCourse(info[0].substring(0, info[0].length() - 1));
+    							
+    							// Set type
+    							String type = info[2].substring(0, info[2].length() - 1);
+    							if(type.equals("Fyrirlestrar"))
+    							{
+    								cls.setType("Fyrirlestur");
+    							}
+    							else if(type.equals("Dæmatímar"))
+    							{
+    								cls.setType("Dæmatími");
+    							}
+    							else
+    							{
+    								cls.setType(type);
+    							}
+    							
+    							// Set teachers
+    							// Not going to do this now, it causes errors and it is not really needed as is
+    							/*for(int i = 0; i < info.length; i++)
+    							{
+    								if(info[i].contains("Kennari: "))
+    								{
+    									cls.getTeachers().add(info[i].substring(9));
+    								}
+    							}*/
+    							
+    							// Set location
+    							Elements smalls = child.select("a > small");
+    							Element small = smalls.first();
+    							int indexOfLocation = (small.text()).indexOf("stofa");
+    							String locationString = small.text().substring(indexOfLocation);
+    							String location = locationString.substring(6);
+    							cls.setLocation(location);
+    							
+    							// Set start and end time strings
+    							Element timeColumn = columns.get(0);
+    							// split on &nbsp
+    							String[] time = timeColumn.text().split("\u00a0");
+    							cls.setStartString(time[0]);
+    							cls.setEndString(time[1]);
+    							
+    							// Set actual start and end times
+    							String[] startTime = cls.getStartString().split(":");
+    							String[] endTime = cls.getEndString().split(":");
+    							
+    							int startHour = Integer.parseInt(startTime[0]);
+    							int startMinute = Integer.parseInt(startTime[1]);
+    							int endHour = Integer.parseInt(endTime[0]);
+    							int endMinute = Integer.parseInt(endTime[1]);
+    							
+    							Calendar startDate = new GregorianCalendar();
+    							Calendar endDate = new GregorianCalendar();
+    							
+    							startDate.set(Calendar.HOUR_OF_DAY, startHour);
+    							startDate.set(Calendar.MINUTE, startMinute);
+    							startDate.set(Calendar.SECOND, 0);
+    							startDate.set(Calendar.MILLISECOND, 0);
+    							
+    							endDate.set(Calendar.HOUR_OF_DAY, endHour);
+    							endDate.set(Calendar.MINUTE, endMinute);
+    							endDate.set(Calendar.SECOND, 0);
+    							endDate.set(Calendar.MILLISECOND, 0);
+    							
+    							cls.setStartDate(startDate);
+    							cls.setEndDate(endDate);
+    							
+    							this.classes.add(cls);
+
+    							/*
+    							log("------------------------------------------------------");
+    							log("Course: " + cls.getCourse());
+    							log("Type: " + cls.getType());
+    							log("Location: " + cls.getLocation());
+    							log("Start: " + cls.getStartString());
+    							log("End: " + cls.getEndString());
+    							*/
+    						}
+    					}
+    				}
+    			}
+    		}
+    	}
+    }
+    
     private void parseAssignments(Elements jsoupAssignments)
     {
     	if(jsoupAssignments != null)
@@ -320,8 +501,6 @@ public class RUData
     	return;
     }
 
-    
-    // This definitely works correctly
     private void parseGrades(Elements jsoupGrades)
     {
     	if(jsoupGrades != null)
@@ -495,5 +674,11 @@ public class RUData
     	grades.add(reir);
     	
     	return grades;
+    }*/
+
+    /*public void log(String msg)
+    {
+    	Log.i("RUData log", msg);
+    	return;
     }*/
 }

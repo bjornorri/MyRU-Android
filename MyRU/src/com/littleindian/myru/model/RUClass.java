@@ -1,7 +1,8 @@
 package com.littleindian.myru.model;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class RUClass
 {
@@ -11,8 +12,8 @@ public class RUClass
 	private String location;
 	private String startString;
 	private String endString;
-	private Date startDate;
-	private Date endDate;
+	private Calendar startDate;
+	private Calendar endDate;
 	
 	
 	public String getCourse()
@@ -63,32 +64,32 @@ public class RUClass
 	{
 		this.endString = endString;
 	}
-	public Date getStartDate()
+	public Calendar getStartDate()
 	{
 		return startDate;
 	}
-	public void setStartDate(Date startDate)
+	public void setStartDate(Calendar startDate)
 	{
 		this.startDate = startDate;
 	}
-	public Date getEndDate()
+	public Calendar getEndDate()
 	{
 		return endDate;
 	}
-	public void setEndDate(Date endDate)
+	public void setEndDate(Calendar endDate)
 	{
 		this.endDate = endDate;
 	}
 	
 	public boolean isOver()
 	{
-		Date now = new Date();
+		Calendar now = new GregorianCalendar();
 		return now.after(this.endDate);
 	}
 	
 	public boolean isNow()
 	{
-		Date now = new Date();
+		Calendar now = new GregorianCalendar();
 		return (now.after(this.startDate) && now.before(this.endDate));
 	}
 }

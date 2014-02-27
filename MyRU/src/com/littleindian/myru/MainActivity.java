@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.ImageView;
@@ -26,6 +25,7 @@ public class MainActivity extends FragmentActivity
 		
 		// Set the context of RUData
 		RUData.getInstance().setContext(this);
+		
 		
 		// Log out at startup to test login screen
 		//RUData.getInstance().setAuthentication(null);
@@ -53,15 +53,21 @@ public class MainActivity extends FragmentActivity
 		
 		/* Tab creation begins */
 		
-		// Assignments tab
+		// Timetable tab
 		View tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
-		((TextView)tabIndicator.findViewById(R.id.tabTitle)).setText("Assignments");
+		((TextView)tabIndicator.findViewById(R.id.tabTitle)).setText("Stundatafla");
+		((ImageView)tabIndicator.findViewById(R.id.tabIcon)).setImageResource(R.drawable.timetable_icon);
+		mTabHost.addTab(mTabHost.newTabSpec(ApplicationConstants.tab0).setIndicator(tabIndicator), TimeTableFragment.class, null);
+		
+		// Assignments tab
+		tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
+		((TextView)tabIndicator.findViewById(R.id.tabTitle)).setText("Verkefni");
 		((ImageView)tabIndicator.findViewById(R.id.tabIcon)).setImageResource(R.drawable.assignments_icon);
 		mTabHost.addTab(mTabHost.newTabSpec(ApplicationConstants.tab1).setIndicator(tabIndicator), TabContainerFragment1.class, null);
 		
 		// Grades tab
 		tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, null);
-		((TextView)tabIndicator.findViewById(R.id.tabTitle)).setText("Grades");
+		((TextView)tabIndicator.findViewById(R.id.tabTitle)).setText("Einkunnir");
 		((ImageView)tabIndicator.findViewById(R.id.tabIcon)).setImageResource(R.drawable.grades_icon);
 		mTabHost.addTab(mTabHost.newTabSpec(ApplicationConstants.tab2).setIndicator(tabIndicator), TabContainerFragment2.class, null);
 		
@@ -73,30 +79,23 @@ public class MainActivity extends FragmentActivity
 		
 		/* Tab creation ends */
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
 	
 	@Override
 	public void onBackPressed()
 	{
 		// If assignment tab
-		if(mTabHost.getCurrentTab() == 0)
+		if(mTabHost.getCurrentTab() == 1)
 		{
 			TabContainerFragment1 container = (TabContainerFragment1) getSupportFragmentManager().findFragmentByTag(ApplicationConstants.tab1);
 			container.onBackPressed();
 		}
 		// If grade tab
-		else if(mTabHost.getCurrentTab() == 1)
+		else if(mTabHost.getCurrentTab() == 2)
 		{
 			TabContainerFragment2 container = (TabContainerFragment2) getSupportFragmentManager().findFragmentByTag(ApplicationConstants.tab2);
 			container.onBackPressed();
 		}
+		// If timetable or málið tab (no internal navigation here)
 		else
 		{
 			super.onBackPressed();

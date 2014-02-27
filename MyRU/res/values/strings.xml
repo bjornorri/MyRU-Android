@@ -13,13 +13,16 @@
     <string name="logoutMessage">Are you sure you want to log out?</string>
     <string name="Yes">Yes</string>
     <string name="No">No</string>
-    <string name="Assignments">Assignments</string>
-    <string name="Grades">Grades</string>
+    <string name="Assignments">Verkefni</string>
+    <string name="Grades">Einkunnir</string>
     <string name="Malid">Málið</string>
     <string name="Icon">Icon</string>
-    <string name="noAssignments">No Assignments</string>
-    <string name="noGrades">No Grades</string>
-    <string name="Grade">Grade:</string>
-    <string name="Rank">Rank:</string>
+    <string name="noAssignments">Engin verkefni</string>
+    <string name="noGrades">Engar einkunnir</string>
+    <string name="Grade">Einkunn:</string>
+    <string name="Rank">Röð:</string>
+    <string name="noClasses">Engir tímar</string>
+    <string name="networkError">Network error</string>
+    <string name="networkMessage">Unable to load data</string>
 
 </resources>

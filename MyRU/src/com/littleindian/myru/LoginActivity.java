@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.view.View.OnTouchListener;
 
 public class LoginActivity extends Activity
@@ -92,6 +93,12 @@ public class LoginActivity extends Activity
 			{
 				finish();
 				startActivity(new Intent(getBaseContext(), MainActivity.class));
+			}
+			// Show dialog if network error...
+			else if(statusCode == 408)
+			{
+				Toast.makeText(getBaseContext(), "No Internet connection!", Toast.LENGTH_LONG).show();
+				spinner.setVisibility(View.INVISIBLE);
 			}
 			// If unsuccessful, show the invalidLabel
 			else
